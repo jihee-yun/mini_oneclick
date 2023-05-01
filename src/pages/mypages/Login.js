@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Modal from "../utils/Modal";
+import Modal from "../../utils/Modal";
 import styled from "styled-components";
-import AxiosApi from "../api/AxiosApi";
+import AxiosApi from "../../api/AxiosApi";
 
 const Container = styled.div`
   display: flex;
