@@ -282,9 +282,17 @@ const ReviewPhoto = styled.div`
     overflow:hidden;
   }
 `
+const ReviewContainer = styled.div`
+  display:flex;
+  flex-direction: column;
+  align-items: right;
+  margin: auto 0px;
+`
 const ReviewDesc = styled.div`
-  margin: auto 5px;
-  width: 90%;
+  /* margin: auto; */
+  /* display:flex; */
+  /* width: 90%; */
+  justify-content: right;
   border: 1px solid black;
   padding: 5px;
   word-break: break-all;
@@ -292,7 +300,6 @@ const ReviewDesc = styled.div`
 const ReviewButton = styled.div`
   display:flex;
   justify-content: right;
-  margin: 5px 2px;
   button {
     margin: 0 2px;
   }
@@ -375,20 +382,18 @@ const Lecture = () => {
                   <ReviewPhoto>
                     <img src="https://cdn.class101.net/images/1dfa3159-518b-43f7-9647-6dc8f53de06d/2048xauto.webp" alt="" />
                   </ReviewPhoto>
-                  <div>
+                  <ReviewContainer>
+                    <ReviewDesc>
+                        넘 재밌썼써용ㅇㅇㅇㅇㅇㅇㅇ
+                        ddddddddddddddddddddddd
+                        ddddddddddddddddddddddd
+                        ddddddddddddddfffffffffffffffffffff!
+                    </ReviewDesc>
                     <ReviewButton>
                       <button>수정</button>
                       <button>삭제</button>
                     </ReviewButton>
-                    <ReviewDesc>
-                      <div>
-                      넘 재밌썼써용ㅇㅇㅇㅇㅇㅇㅇ
-                      ddddddddddddddddddddddd
-                      ddddddddddddddddddddddd
-                      ddddddddddddddfffffffffffffffffffff!
-                      </div>
-                    </ReviewDesc>
-                  </div>
+                  </ReviewContainer>
                 </ReviewList> 
                 <div>
                   <button>이전 후기 보기</button>
