@@ -4,10 +4,10 @@ import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
 import { useNavigate } from "react-router-dom";
 import StyledButton from "../utils/StyledButton"
-import arrow from "../images/rightarrow.png";
 import like_icon from "../images/like_icon.png"
 import heart_icon from "../images/heart_icon.png"
 import Slider from "../utils/Slider";
+import NaverMap from "../utils/NaverMap";
 
 
 
@@ -18,26 +18,40 @@ const BodyContainer = styled.div`
 `
 
 // 수강 설명 이미지
-const titleImg = <img className="title" src="https://cdn.class101.net/images/aaac23bf-682b-4e06-bfaa-e0c5a1d5bf9a/2048xauto.webp" alt="" />
-const detailImg1 = <img className="detail img1" src="https://cdn.class101.net/images/bd6763f2-5fe4-4e20-93b5-586ede7b4515/2048xauto.webp" alt="그림2" />
-const detailImg2 = <img className="detail img2" src="https://cdn.class101.net/images/cf838d00-61ce-440b-8ebc-cb22483fc925/960xauto.webp" alt="그림3" />
-const detailImg3 = <img className="detail img3" src="https://cdn.class101.net/images/6bedd4fb-2713-4b40-b64b-4f6e6246cbd6/960xauto.webp" alt="그림4" />
+const detailImg1 = <img className="detail img1" src="https://cdn.class101.net/images/aaac23bf-682b-4e06-bfaa-e0c5a1d5bf9a/2048xauto.webp" alt="" />
+const detailImg2 = <img className="detail img2" src="https://cdn.class101.net/images/bd6763f2-5fe4-4e20-93b5-586ede7b4515/2048xauto.webp" alt="그림2" />
+const detailImg3 = <img className="detail img3" src="https://cdn.class101.net/images/cf838d00-61ce-440b-8ebc-cb22483fc925/960xauto.webp" alt="그림3" />
+const detailImg4 = <img className="detail img4" src="https://cdn.class101.net/images/6bedd4fb-2713-4b40-b64b-4f6e6246cbd6/960xauto.webp" alt="그림4" />
 
 
 const ClassImg = styled.div`
   /* width: auto; */
   height: 400px;
-  margin: 16px 0;
+  width: 100%;
+  margin: 16px 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
   img {
+    box-sizing: border-box;
+    object-fit: cover;
     margin: 5px;
     display: flex;
-    height: 95%;
-    width: 300px;
+    height: 100%;
+    width: 23%;
+    transition: width 0.2s ease;
+  }
+  img:nth-child(1n):hover {
+    /* overflow: hidden; */
+    width: 100%;
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+  img:nth-child(4):hover {
+    /* overflow: hidden; */
+    width: 100%;
+    transform-origin: bottom right;
   }
   .title {
     width: auto;
@@ -155,7 +169,7 @@ const ClassDetail = styled.div`
 const Division2 = styled.div`
   box-sizing: border-box;
   margin-right:10px;
-  height: 250px;
+  height: auto;
   max-width: 25%;
   min-width: 25%;
   box-shadow: 1px 1px 1px 1px lightgray;
@@ -204,6 +218,7 @@ const ClassBtn = styled.div`
     cursor: pointer;
   }
 `
+// 크리에이터 div 페이지
 
 const Contain = styled.div`
   width: 90%;
@@ -244,6 +259,44 @@ const CreatorIntro = styled.div`
   justify-content: center;
 `
 
+// 클래스 후기 div
+const ReviewTitle = styled.div`
+  border: 1px solid black;
+`
+const ReviewList = styled.div`
+  width: 100%;
+  /* margin: 10px auto; */
+  border: 1px solid black;
+  display:flex;
+  flex-wrap:nowrap;
+`
+const ReviewPhoto = styled.div`
+  display:flex;
+  justify-content:center;
+  width: 40%;
+  border: 1px solid black;
+  img {
+    width: auto;
+    height: 200px;
+    object-fit: cover;
+    overflow:hidden;
+  }
+`
+const ReviewDesc = styled.div`
+  margin: auto 5px;
+  width: 90%;
+  border: 1px solid black;
+  padding: 5px;
+  word-break: break-all;
+`
+const ReviewButton = styled.div`
+  display:flex;
+  justify-content: right;
+  margin: 5px 2px;
+  button {
+    margin: 0 2px;
+  }
+`
 
 // Division1 에 들어가는 목차 및 내용 화면 전환을 위한 함수
 const Lecture = () => {
@@ -258,10 +311,10 @@ const Lecture = () => {
     <BodyContainer>
       <h1>요리</h1>
       <ClassImg>
-          {titleImg}
           {detailImg1}
           {detailImg2}
           {detailImg3}
+          {detailImg4}
       </ClassImg>
       <ClassMenu>
         <div className="menu menu1">
@@ -304,37 +357,65 @@ const Lecture = () => {
                   </div>
                 </ClassCreatorDesc>
                 <ClassCreator>
-                  {/* <ClassCreatorDiv> */}
                     <li><img src="https://class101.net/images/ic-youtube.png" alt="" />YouTube</li>
                     <li><img src="https://class101.net/images/ic-instagram.png" alt="" />Instagram</li>
-                  {/* </ClassCreatorDiv> */}
                 </ClassCreator>
                 <CreatorIntro>
-                  <div>
                     강사 설명 들어가는 곳
-                  </div>
                 </CreatorIntro>
               </Contain>
             </div>
             {/* 후기 */}
             <div className={`${DescSel === 3 ? `descSel` : `descNoSel`}`}>
-
+              <Contain>
+                <ReviewTitle>
+                  실제로 클래스를 진행한 수강생들의 생생한 후기 `50`개가 있어요.
+                </ReviewTitle>
+                <ReviewList>
+                  <ReviewPhoto>
+                    <img src="https://cdn.class101.net/images/1dfa3159-518b-43f7-9647-6dc8f53de06d/2048xauto.webp" alt="" />
+                  </ReviewPhoto>
+                  <div>
+                    <ReviewButton>
+                      <button>수정</button>
+                      <button>삭제</button>
+                    </ReviewButton>
+                    <ReviewDesc>
+                      <div>
+                      넘 재밌썼써용ㅇㅇㅇㅇㅇㅇㅇ
+                      ddddddddddddddddddddddd
+                      ddddddddddddddddddddddd
+                      ddddddddddddddfffffffffffffffffffff!
+                      </div>
+                    </ReviewDesc>
+                  </div>
+                </ReviewList> 
+                <div>
+                  <button>이전 후기 보기</button>
+                  <button>다음 후기 보기</button>
+                </div>
+              </Contain>
             </div>
           </Division1>
           <Division2>
             <Contain>
-            <ClassCategory>
-              일식
-            </ClassCategory>
-            <ClassTitle>
-              <h3>미슐랭3스타 '칸다' 출신 '코우지 셰프'에게 배우는 스시 오마카세</h3>
+              <ClassCategory>
+                일식
+              </ClassCategory>
+              <ClassTitle>
+                <h3>미슐랭3스타 '칸다' 출신 '코우지 셰프'에게 배우는 스시 오마카세</h3>
+              </ClassTitle>
               <ClassBtn>
                 <li><img src={heart_icon} alt="" />찜하기</li>
                 <li><img src={like_icon} alt="" />좋아요</li>
                 <li><img src={heart_icon} alt="" />공유</li>
               </ClassBtn>
-              <StyledButton>구독하기</StyledButton>
-            </ClassTitle>
+              <StyledButton>구독하기</StyledButton> 
+              <ClassTitle>
+              <h2>강의 장소</h2>
+              서울특별시 양천구 목동중앙북로10길 45
+              </ClassTitle>
+              <NaverMap>{/* 네이버 지도 */}</NaverMap>
             </Contain>
           </Division2>
         </Classlist>
