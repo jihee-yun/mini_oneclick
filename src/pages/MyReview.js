@@ -18,7 +18,7 @@ const SectionBox = styled.div`
   justify-content: left;
   flex-wrap: wrap;
   font-weight: bold;
-  gap: 60px;
+  gap: 50px;
   margin-bottom: 100px;
 `;
 
