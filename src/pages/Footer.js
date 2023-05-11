@@ -5,7 +5,7 @@ const FooterStyled = styled.footer`
 
   width: 100%;
   /* height: 70px; */
-  position: fixed;
+  position: relative;
   bottom: 0;
   font-size: 15px;
   /* margin-top: auto; */

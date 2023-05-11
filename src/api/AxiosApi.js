@@ -34,8 +34,24 @@ const AxiosApi = {
       id : id
     }
     return await axios.post(KH_DOMAIN + "/del", del);
+  },
+
+  // 강의 상세 설명 페이지
+  viewLecture: async(id) => {
+    return await axios.get(KH_DOMAIN + `/class?id=${id}`);
   }
 };
 
+  // 리뷰 작성
+  // reviewWrite : async(id, content, img, create) => {
+  //   const reviewData = {
+  //     id : id,
+  //     content : content,
+  //     img : img,
+  //     create : create
+  //   }
+  //   return await axios.post(KH_DOMAIN + "/class", reviewData);
+  // }
 
+  
 export default AxiosApi;
