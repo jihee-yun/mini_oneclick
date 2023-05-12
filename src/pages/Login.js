@@ -1,230 +1,245 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
 import Modal from "../utils/Modal";
 import styled from "styled-components";
+import { Link, useNavigate } from "react-router-dom";
 import AxiosApi from "../api/AxiosApi";
+import { UserContext } from "../context/UserInfo";
+// import Header from "./Header";
+// import Footer from "./Footer";
 
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-evenly;
+  width: 50%;
+  margin: 0 auto;
 
-  .item1 {
-    margin-top: 100px;
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  .title {
+    margin-top: 10px;
   }
-
-  .item2 {
+  
+  .item1 {
     margin: 10px;
     display: flex;
+    justify-content: center;
+    text-align: center;
     align-items: center;
-  }
-
-  .item3 {
-    margin-top: 10px;
-    margin-left: 40px;
-    margin-right: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #999;
-    font-size: 14px;
-  }
-
-  .hint {
-      display: flex;
-      margin-top: -5px;
-      margin-bottom: 10px;
-      margin-right: 40px;
-      justify-content:right;
-      align-items:center;
-      font-size: 12px;
-      color: #999;
-  }
-  .success {
-    color: royalblue;
-  }
-  .error {
-    color: red;
   }
 
   .enable-button {
-    margin-top: 100px;
+    margin-top: 10px;
     margin-left: 30px;
     margin-right: 30px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 26px;
-    font-weight: bold;
-    width: 100%; /* 원하는 너비 설정 */
-    height: 50px;
+    background-color: #FC7373;
     color: white;
-    background-color: orange;
-    font-size: 15px;
-    font-weight: 400;
-    border-radius: 18px;
-    border: orange;
-    font-weight: 700;
+    border: none;
+    width: 600px;
+    height: 40px;
+    width: 415px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
   }
-  .enable-button:active {
-    margin-top: 100px;
-    margin-left: 30px;
-    margin-right: 30px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 26px;
-    font-weight: bold;
-    width: 100%; /* 원하는 너비 설정 */
-    height: 50px;
-    color: white;
-    background-color: #999;
-    font-size: 15px;
-    font-weight: 400;
-    border-radius: 18px;
-    border: #999;
-    font-weight: 700;
+
+  .title {
+    text-align: center;
   }
+
   .disable-button {
-    margin-top: 100px;
+    margin-top: 10px;
     margin-left: 30px;
     margin-right: 30px;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 26px;
-    font-weight: bold;
-    width: 100%; /* 원하는 너비 설정 */
-    height: 50px;
+    background-color: lightgrey;
     color: white;
-    background-color: #999;
+    border: none;
+    width: 415px;
+    height: 40px;
+    border-radius: 5px;
+  }
+
+  .hint {
+    display: flex;
+    margin-top: -5px;
+    margin-right: 40px;
+    justify-content: center;
+    align-items:center;
+    font-size: 12px;
+  }
+
+  .success {
+    color: royalblue;
     font-size: 13px;
-    font-weight: 400;
-    border-radius: 18px;
-    border: orange;
+  }
+
+  .error {
+    color: red;
+    font-size: 13px;
   }
 
   .signup {
     display: flex;
-    justify-content: right;
+    justify-content: center;
     align-items: center;
-    color: orange;
-    font-weight: 700;
-    margin-top: 10px;
-    margin-right: 40px;
-    font-size: 14px;
+    text-align: center;
+    color: grey;
+    font-size: 13px;
+
     .link_style {
-      color: orange;
-      text-decoration: none;
+      color: inherit;
+    }
+    p {
+      margin-right: .5em;
     }
   }
+
+  .check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: grey;
+    font-size: 13px;
+    margin-top: -7px;
+
+    .link_style {
+      color: inherit;
+    }
+
+    p {
+      margin-right: .5em;
+    }
+  }
+
+
 `;
 
 const Input = styled.input`
   margin-left: 30px;
   margin-right: 30px;
-  width: 100%; /* 원하는 너비 설정 */
-  height: auto; /* 높이값 초기화 */
-  line-height : normal; /* line-height 초기화 */
-  padding: .8em .5em; /* 원하는 여백 설정, 상하단 여백으로 높이를 조절 */
-  font-family: inherit; /* 폰트 상속 */
+  width: 400px;
+  height: auto;
+  line-height : normal;
+  padding: .8em .5em;
+  font-family: inherit;
   border: 1px solid #999;
-  border-radius: 18px; /* iSO 둥근모서리 제거 */
+  border-radius: 2px;
   outline-style: none; /* 포커스시 발생하는 효과 제거를 원한다면 */
 `;
 
 const Login = () => {
-  const navigate = useNavigate();  // 라우터 이동을 하기 위해(로그인 성공 시 홈으로 이동)
+  const navigate = useNavigate(); // 라우터 이동을 하기 위해서
 
   // 키보드 입력
   const [inputId, setInputId] = useState("");
-  const [inputPw, setInputPw ] = useState("");
+  const [inputPw, setInputPw] = useState("");
 
-  // 오류 메세지(실시간으로 확인, onChange)
-  const [idMsg, setIdMsg] = useState("");
-  const [pwMsg, setPwMsg] = useState("");
-
-  // 유효성 검사(아이디, 비밀번호 둘 다 충족 시 버튼 활성화)
+  // 유효성 검사
   const [isId, setIsId] = useState("");
   const [isPw, setIsPw] = useState("");
 
-  // 모달(팝업 처리)
+  // 모달(팝업) 처리
   const [modalOpen, setModalOpen] = useState(false);
   const closeModal = () => {
     setModalOpen(false);
-  } 
-
-  const onChangeId = (e) => {
-    const regexId = /^\w{5,20}$/; // 로그인 시엔 정규식 체크할 필요 없음, 어차피 회원가입 때 체크하고 가입하니까
-    setInputId(e.target.value);
-    if(!regexId.test(e.target.value)) { // 아직 set값이 들어오지 않았으므로 e.target.value로 비교해줘야 한다
-      setIdMsg("5자리 이상 20자리 미만 아이디 입력")
-      setIsId(false);
-    } else {
-      setIdMsg("올바른 형식 입니다.");
-      setIsId(true);
-    }
+  }
+  const confirmModal = () => {
+    console.log("확인 버튼이 눌렸습니다.")
   }
 
+  // // 로그인 상태 체크
+  // const [isLogin, setIsLogin] = useState(false);
+
+  const onChangeId = (e) => {
+      const regexId = /^\w{5,20}$/;
+      setInputId(e.target.value);
+      if(!regexId.test(e.target.value)) {
+          setIsId(false);
+      } else  {
+          setIsId(true);
+      }
+  }
   const onChangePw = (e) => {
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/
+      const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[a-z])(?=.*\d)[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]{8,16}$/;
       const passwordCurrent = e.target.value;
       setInputPw(passwordCurrent)
       if (!passwordRegex.test(passwordCurrent)) {
-          setPwMsg('숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!')
           setIsPw(false)
       } else {
-          setPwMsg('안전한 비밀번호에요 : )');
           setIsPw(true);
       }
   }
+
+  const { setUserName, setPhone, setMail, setMemberNum } = useContext(UserContext);
 
   const onClickLogin = async() => {
     // 로그인을 위한 axios 호출
     const response = await AxiosApi.memberLogin(inputId, inputPw);
     console.log(response.data);
     if(response.data === true) {
-      window.localStorage.setItem("userId", inputId); // 웹페이지에 로그인 정보 저장(간단하나 해킹 위험)
-      window.localStorage.setItem("password", inputPw);
-      navigate("/Mypage");
+      // 회원정보 조회 api호출(로그인 성공시)
+      const memberInfo = await AxiosApi.memberGet(inputId);
+      console.log(memberInfo.data); // 테스트용 추후 반드시 주석처리
+      // 조회한 회원 정보를 UserContext에 저장(PG사 요구데이터 and oneclick 데이터베이스 맞추기위해 필요..)
+      setUserName(memberInfo.data.name);
+      setPhone(memberInfo.data.phone);
+      setMail(memberInfo.data.email);
+      setMemberNum(memberInfo.data.membernum);
+      
+
+      navigate("/mypage");
     } else {
-        console.log("로그인 에러!")
-        setModalOpen(true);
+      console.log("로그인 에러!!");
+      setModalOpen(true);
     }
   }
 
-  const confirmModal = () => {
-    console.log("확인 버튼이 눌렸습니다.")
-    setModalOpen(false);
-  }
+  // const clickLogin = async () => {
+  //   setIsLogin(true);
+  // }
 
-    return(
-        <Container>
-            <div className="item2">
-                <Input placeholder="이름" value ={inputId} onChange={onChangeId}/>
-            </div>
-            <div className="hint">
-              {inputId.length > 0 && <span className={`${isId ? 'success' : 'error'}`}>{idMsg}</span>}
-            </div>
-            <div className="item2">
-                <Input placeholder="패스워드" value ={inputPw} onChange={onChangePw}/>
-            </div>
-            <div className="hint">
-                {inputPw.length > 0 && (
-                    <span className={`${isPw ? 'success' : 'error'}`}>{pwMsg}</span>)}
-            </div>
-            <div className="item2">
-            {(isId && isPw) ?
-              <button className="enable-button" onClick={onClickLogin}>SING IN</button>  :
-              <button className="disable-button" >SING IN</button>}
-            </div>
-            <div className="signup">
-              <Link to="/SignUp" className="link_sytle">회원가입</Link>
-            </div>
-            <Modal open={modalOpen} type={true} confirm={confirmModal} close={closeModal} header="오류">
-              아이디 및 패스워드를 재확인 해주세요
-            </Modal>
-        </Container>
-    );
+  // const clickLogout = async () => {
+  //   setIsLogin(false);
+  // }
+  // // 로그아웃 버튼 클릭시
+  // const onClickLogout = () => {
+  //   setIsLogin(false);
+  // };
+
+  return(
+    <>
+    {/* <Header /> */}
+      <Container>
+          <div className="title">
+            <h2>ONE Click에서 더 빠르게 즐기세요!</h2>
+            <h3>로그인 하기</h3>
+          </div>
+          <div className="item1">
+            <Input placeholder="아이디" value ={inputId} onChange={onChangeId}/>
+          </div>
+          <div className="item1">
+            <Input type="password" placeholder="패스워드" value ={inputPw} onChange={onChangePw}/>
+          </div>
+          <div className="item1">
+          {(isId && isPw) ?
+            <button className="enable-button" onClick={onClickLogin}>로그인</button>  :
+            <button className="disable-button" >로그인</button>}
+          </div>
+          <div className="signup">
+            <p>회원가입이 필요하신가요? </p>
+            <Link to="signup" className="link_style">회원가입</Link>
+          </div>
+          <div className="check">
+            <p>회원정보가 기억나지 않으신가요? </p>
+            <Link to="signup" className="link_style">ID / PW 찾기</Link>
+          </div>
+          <Modal open={modalOpen} type={true} consfirm={confirmModal} close={closeModal} header="오류">
+            아이디 및 패스워드 재확인 필요
+          </Modal>
+          {/* <Footer /> */}
+      </Container>
+      </>
+  );
 };
 
 export default Login;

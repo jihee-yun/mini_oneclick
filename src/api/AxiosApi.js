@@ -34,8 +34,32 @@ const AxiosApi = {
       id : id
     }
     return await axios.post(KH_DOMAIN + "/del", del);
-  }
+  },
+  // 구독 정보 생성
+  subRegister: async(paymentNum, type) => {
+    const subscription = {
+      paymentNum: paymentNum,
+      type_: type
+    };
+    return await axios.post(KH_DOMAIN + "/subscription", subscription)
+  },
+  // 구독 정보 조회
+  // getSubscription: async(num) => {
+  //   return await axios.get(KH_DOMAIN + `subscription?id=${num}`);
+  // },
+
+  // 결제 완료
+  paymentInsert: async(lectureNum, memberNum, merchant_uid, amount) => {
+    const payment = {
+      lectureNum: lectureNum,
+      memberNum: memberNum,
+      created: merchant_uid,
+      amount: amount 
+      // 추가해줘
+    };
+    return await axios.post(KH_DOMAIN + "/payment", payment);
+  },
+  
 };
-
-
+  
 export default AxiosApi;
