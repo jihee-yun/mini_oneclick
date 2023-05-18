@@ -45,7 +45,7 @@ const AxiosApi = {
   // 리뷰 불러오기
   viewList: async(review) => {
     console.log("loadReviewList 호출 : " + review);
-    return await axios.get(KH_DOMAIN + `/class/review?num=${review}`)
+    return await axios.get(KH_DOMAIN + `/class/loadReview?num=${review}`)
   },
 
   // 리뷰 작성
