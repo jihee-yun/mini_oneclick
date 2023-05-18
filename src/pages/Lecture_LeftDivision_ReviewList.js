@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { UserContext } from "../context/UserStore";
+import account from "../images/account.png"
+import { getStorage, ref, uploadBytes, storage, getDownloadURL } from "firebase/storage";
 
 const Container = styled.div`
   width: 100%;
@@ -30,6 +33,8 @@ const Container = styled.div`
   }
 
   .title {
+    display:flex;
+    align-items: center;
     width: 75%;
     height: 70px;
     font-size: 0.8em;
@@ -58,10 +63,7 @@ const Container = styled.div`
   }
   
   button {
-    position: absolute;
-    bottom: 10px;
-    right: 15px;
-    /* border: none; */
+    margin: 2px;
     border: 1px solid lightgray;
     border-radius: 2px;
     width: 15%;
@@ -74,27 +76,43 @@ const Container = styled.div`
       cursor: pointer;
     }
   }
+
+  .activeBtnStyle {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+  }
+  .noBtnStyle {
+    display:none;
+  }
 `
+// 부모 컴포넌트는 Lecture_LeftDivision_ReviewWrite
+const ReviewList = ({member, title, content, img}) => {
 
-const ReviewList = () => {
+  // 리뷰 한 개씩 불러올 때 사진을 올리지 않았으면 Default 사진으로 불러오게 하기
+  // + firebase 사용해서 불러오기
+  if(img === null) img = account;
 
+  // context에서 사용자 PK 불러오기
+  const context = (useContext(UserContext));
+  const {memberNum} = context;
+  
   return (
     <Container>
       <div className="reviewbox">
         <div className="reviewhead">
-          <img src="https://cdn.class101.net/images/1dfa3159-518b-43f7-9647-6dc8f53de06d/2048xauto.webp" alt="강의이미지" />
-          <div className="title">
-            <p>
-            {/** 제목은 60자까지만 가능 */}제목 들어가는 부분
-            </p>
-          </div>
+          <img src={img} alt="강의이미지" />
+          <div className="title">{title}</div>
         </div>
         <div className="contents">
           <hr />
-          <p>내용들어가는 부분 {/** 100자까지..? */}
-          </p>
+          <p>{content}</p>
         </div>
-        <button>수정하기</button>
+        {/* 자신이 쓴 후기만 삭제, 수정 버튼이 뜨도록 */}
+        <div className={member === memberNum ? ".activeBtnStyle" : "noBtnStyle"}>
+          <button>수정하기</button>
+          <button>삭제하기</button>
+        </div>
     </div>
   </Container>
   )

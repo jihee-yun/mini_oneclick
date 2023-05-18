@@ -12,12 +12,13 @@ const detailImg4 = <img className="detail img4" src="https://cdn.class101.net/im
 const ClassImg = styled.div`
   /* width: auto; */
   height: 400px;
-  width: 100%;
-  margin: 16px 10px;
+  width: 96%;
+  margin: 16px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  align-self: center;
   img {
     box-sizing: border-box;
     object-fit: cover;
@@ -25,7 +26,7 @@ const ClassImg = styled.div`
     display: flex;
     height: 100%;
     width: 23%;
-    transition: width 0.2s ease;
+    transition: width 2s ease;
   }
   img:nth-child(1n):hover {
     /* overflow: hidden; */

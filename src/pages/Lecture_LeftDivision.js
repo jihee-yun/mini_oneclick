@@ -39,7 +39,7 @@ const ClassMenu = styled.div`
 `
 // 왼쪽 메뉴 스타일
 const Division1 = styled.div`
-  width: 70%;
+  width: 74%;
   box-shadow: 1px 1px 1px 1px lightgray;
   margin-right: 10px;
   .descSel {
@@ -47,12 +47,12 @@ const Division1 = styled.div`
     z-index: 5;
   }
   .descNoSel {
-    width: 110%;
-    color: red;
+    /* width: 100%; */
     position: absolute;
     top: 20px;
-    z-index: -1;
-    opacity: 0;
+    display:none;
+    /* z-index: -1; */
+    /* opacity: 0; */
   }
 `
 
@@ -90,14 +90,8 @@ const Introduction = styled.div`
   }
 `
 
-const ClassDetailTitle = styled.div`
-  span {
-    color: blue;
-  }
-`
-
 const ClassDetail = styled.div`
-  width: 100%;
+  width: 90%;
   margin: 10px auto;
   display: flex;
   flex-direction: column;
@@ -110,6 +104,22 @@ const ClassDetail = styled.div`
 const Contain = styled.div`
   width: 90%;
   margin: 10px auto;
+
+  .activeBtnStyle {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+  }
+  .noBtnStyle {
+    opacity:0;
+  }
+  .btnStyle {
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+
+  }
 `
 const ClassCreatorDesc = styled.div`
   display: flex;
@@ -146,7 +156,7 @@ const CreatorIntro = styled.div`
   justify-content: center;
 `
 
-// 클래스 후기 div
+// 클래스 후기 제목
 const ReviewTitle = styled.div`
   border: 1px solid black;
 `
@@ -161,19 +171,40 @@ const LeftDivision = () => {
     setDescSel(count);
   }
 
-  const [list, setList] = useState("");
-
+  const [lectureList, setLectureList] = useState("");
   useEffect(() => {
     const LectureList = async() => {
-      const rsp = await AxiosApi.viewLecture(1);
-      if(rsp.status === 200) setList(rsp.data);
+      // category 번호와 강의 번호 대입
+      const rsp = await AxiosApi.viewLecture(4, 4);
+      if(rsp.status === 200) {
+        setLectureList(rsp.data);
+      }
+      else alert("강의 불러오기 실패");
     }
     LectureList();
   }, []);
-  
+
+  // reviewListNum 이 1이면 이전 후기 버튼 사라짐
+  const [reviewListNum, setReviewListNum] = useState(1);
+
+  const [review, setReview] = useState("");
+  useEffect(()=> {
+    const loadReviewList = async() => {
+      console.log("loadReviewList 메소드 실행");
+      const rsp = await AxiosApi.viewList(1);
+      if(rsp.status === 200) {
+        console.log(rsp.data);
+        setReview(rsp.data);
+        console.log("viewList DB전송 성공");
+      }
+      else console.log("viewList DB전송 실패");
+    }
+    loadReviewList();
+  },[]);
+
   return (
     <Division1>
-      {list && list.map(Lecturelist => (
+      {lectureList && lectureList.map(Lecturelist => (
       <div key={Lecturelist.id}>
         <ClassMenu>
           <div className="menu menu1">
@@ -186,16 +217,13 @@ const LeftDivision = () => {
         <Contain>
           {/* 메뉴 버튼 시 z-index 변경 */}   
           <ClassDescTitle>  {/* 클래스 소개 */}
-            이런 걸 배울 거예요.
+            {Lecturelist.intro}
           </ClassDescTitle>
           <Introduction> 
             <Slider></Slider> {/* 슬라이더 */}
           </Introduction>
-          <ClassDetailTitle>
-            <h3><span>초급자</span>분들을 위한 <span>일식 요리, 오마카세</span> 클래스 입니다.</h3>
-          </ClassDetailTitle>
           <ClassDetail>
-            자세한 강의 설명은 여기로dddddddddddddddddddddddd
+            {Lecturelist.description}
           </ClassDetail>
         </Contain>
       </div>
@@ -219,24 +247,27 @@ const LeftDivision = () => {
           </CreatorIntro>
         </Contain>
       </div>    
+      </div>
+    ))}
       <div className={`${DescSel === 3 ? `descSel` : `descNoSel`}`}>  {/* 후기 */}
         <Contain>
           <ReviewWrite></ReviewWrite>
           <ReviewTitle>
-            실제로 클래스를 진행한 수강생들의 생생한 후기 `50`개가 있어요.
+            실제로 클래스를 진행한 수강생들의 생생한 후기 {review.length}개가 있어요.
           </ReviewTitle>
-          <div className="reviewlist">
-          <ReviewList></ReviewList> 
-          <ReviewList></ReviewList> 
+          {review && review.map(reviewData => (
+          <div className="reviewlist" key={review.id}>
+            <ReviewList member={reviewData.memberNum} title={reviewData.title} content={reviewData.content} img={reviewData.img}></ReviewList> 
           </div>
-          <div>
-            <button>이전 후기 보기</button>
-            <button>다음 후기 보기</button>
+          ))}
+          <div className="btnStyle">
+            <button className={reviewListNum !== 1? "activeBtnStyle" : "noBtnStyle"}>이전 후기 보기</button>
+            <button >다음 후기 보기</button>
           </div>
+          
         </Contain>
       </div>
-    </div>
-    ))}
+
   </Division1>
   )
 }

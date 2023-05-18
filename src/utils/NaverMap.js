@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
  
 const { naver } = window;
-const NaverMap = () => {
+const NaverMap = ({children}) => {
   // 주소 불러오기 전엔 Default 값으로 에버랜드 주소 불러옴
   const [xVal, setXVal] = useState(37.5112);
   const [yVal, setYVal] = useState(127.0981);
-
+  console.log(children);
   useEffect(() => {
     // 제대로 불러오는지 확인
     // console.log("useEffect Call : " + xVal + " " + yVal);
@@ -27,7 +27,7 @@ const NaverMap = () => {
         },
     };
 
-    // 지도 구현
+    // 지도 구현하는 변수 생성
     const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
 
     // 지도에서 마커 구현
@@ -38,7 +38,7 @@ const NaverMap = () => {
     });
     
     // 위도, 경도 찾으려는 주소를 query 안에 지정하면 status에 상태와 response 에 검색 결과 컨테이너를 가져온다.
-    naver.maps.Service.geocode({ query: '목동중앙북로10길 45' }, function(status, response) {
+    naver.maps.Service.geocode({ query: children }, function(status, response) {
       // 올바른 상태값이 리턴되지 않으면 오류발생 알림
       if (status !== naver.maps.Service.Status.OK) {
           return alert('지도 로딩 실패!');

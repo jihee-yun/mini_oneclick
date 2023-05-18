@@ -5,10 +5,14 @@ import MyClass from './pages/MyClass';
 import Login from './pages/Login';
 import Lecture from './pages/Lecture_Main';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import UserStore from './context/UserStore';
+import {auth} from "./api/firebase"
 
 function App() {
+
   return (
-   <>
+    
+   <UserStore>
    <Router>
       <Routes>
         <Route path="/Mypage" element={<Mypage />}/>
@@ -18,7 +22,7 @@ function App() {
         <Route path="/" element={<Login />}/>
       </Routes>
     </Router>
-   </>
+   </UserStore>
   );
 }
 

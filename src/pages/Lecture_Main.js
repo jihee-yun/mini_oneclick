@@ -9,21 +9,25 @@ import Footer from "./Footer";
 
 
 const BodyContainer = styled.div`
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: 100%;
   box-sizing: border-box;
+  display:flex;
+  flex-direction:column;
+  /* background-color:black */
 `
 
 
 
 // 양 쪽 메뉴 분할
 const Classlist = styled.div`
+  width: 90%;
   display:flex;
-  margin: 0 auto;
+  justify-content: space-between;
+  align-self: center;
 `
 
 const Lecture = () => {
-
+  
   return (
     <BodyContainer>
       <MainIMG></MainIMG>

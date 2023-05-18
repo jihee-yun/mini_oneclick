@@ -37,21 +37,29 @@ const AxiosApi = {
   },
 
   // 강의 상세 설명 페이지
-  viewLecture: async(id) => {
-    return await axios.get(KH_DOMAIN + `/class?id=${id}`);
-  }
-};
+  viewLecture: async(lectureNum, category) => {
+    console.log("viewLecture 메소드 호출" + category + lectureNum);
+    return await axios.get(KH_DOMAIN + `/class?category=${category}&lectureNum=${lectureNum}`);
+  },
+
+  // 리뷰 불러오기
+  viewList: async(review) => {
+    console.log("loadReviewList 호출 : " + review);
+    return await axios.get(KH_DOMAIN + `/class/review?num=${review}`)
+  },
 
   // 리뷰 작성
-  // reviewWrite : async(id, content, img, create) => {
-  //   const reviewData = {
-  //     id : id,
-  //     content : content,
-  //     img : img,
-  //     create : create
-  //   }
-  //   return await axios.post(KH_DOMAIN + "/class", reviewData);
-  // }
-
+  reviewWrite: async(num, lecNum, memNum, title, content, img) => {
+    const reviewData = {
+      num : num,
+      lecNum : lecNum,
+      memNum : memNum,
+      title : title,
+      content : content,
+      img : img
+    }
+    return await axios.post(KH_DOMAIN + "/class/reviewWrite", reviewData);
+  }
+};
   
 export default AxiosApi;

@@ -25,14 +25,14 @@ const ModalStyle = styled.div`
         border: 0;
     }
     section {
-        width: 90%;
-        max-width: 450px;
+        max-width: 80vw;
+        max-height: 80vh;
         margin: 0 auto;
         border-radius: 0.3rem;
         background-color: #fff;
         /* 팝업이 열릴때 스르륵 열리는 효과 */
         animation: modal-show 0.3s;
-        overflow: hidden;
+        overflow: scroll;
     }
     section > header {
         position: relative;
@@ -53,9 +53,18 @@ const ModalStyle = styled.div`
         background-color: transparent;
     }
     section > main {
+
+        object-fit: contain;
         padding: 16px;
         border-bottom: 1px solid #dee2e6;
         border-top: 1px solid #dee2e6;
+        
+      img {
+      width:100%;
+        height: 30%;
+        object-fit:contain;
+      }
+
     }
     section > footer {
         padding: 12px 16px;
@@ -88,31 +97,35 @@ const ModalStyle = styled.div`
     }
 `;
 
-const Modal = (props) => {
-    const {open, confirm, close, type, header, children} = props;
+const ModalIMG = (props) => {
+  const {open, confirm, close, type, header, children} = props;
 
-    // &times; 는 X표 문자를 의미
-    return (
-        <ModalStyle>
-            <div className={open ? "openModal modal" : "modal"}>
-                {open && 
-                    <section>
-                        <header>
-                            {header}
-                            <button onClick={close}>
-                                &times;  
-                            </button>
-                        </header>
-                        <main>{children}</main>
-                        <footer>
-                            {type && <button onClick={confirm}>확인</button>}
-                            <button onClick={close}>취소</button>
-                        </footer>
-                    </section>
-                }
-            </div>
-        </ModalStyle>
-    );
+  // &times; 는 X표 문자를 의미
+  return (
+    <ModalStyle>
+      <div className={open ? "openModal modal" : "modal"}>
+        {open && 
+          <section>
+            <header>
+              {header}
+              <button onClick={close}>
+                  &times;  
+              </button>
+            </header>
+            <main>
+              {children && (
+                <img src={URL.createObjectURL(children)} alt="첨부이미지"/>
+              )}    
+            </main>
+          <footer>
+            {/* {type && <button onClick={confirm}>확인</button>} */}
+            <button onClick={close}>닫기</button>
+          </footer>
+          </section>
+        }
+      </div>
+    </ModalStyle>
+  );
 };
 
-export default Modal;
+export default ModalIMG;

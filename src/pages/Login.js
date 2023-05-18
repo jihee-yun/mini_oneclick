@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Modal from "../utils/Modal";
 import styled from "styled-components";
 import AxiosApi from "../api/AxiosApi";
+import UserStore, { UserContext } from "../context/UserStore";
 
 const Container = styled.div`
   display: flex;
@@ -177,15 +178,19 @@ const Login = () => {
           setIsPw(true);
       }
   }
-
+  const context = (useContext(UserContext));
   const onClickLogin = async() => {
+    const {setIsLogin, setMemberNum} = context;
+
     // 로그인을 위한 axios 호출
+    console.log("onClickLogin 호출");
     const response = await AxiosApi.memberLogin(inputId, inputPw);
+    console.log("onClickLogin response data");
     console.log(response.data);
-    if(response.data === true) {
-      window.localStorage.setItem("userId", inputId); // 웹페이지에 로그인 정보 저장(간단하나 해킹 위험)
-      window.localStorage.setItem("password", inputPw);
-      navigate("/Mypage");
+    if(response.data !== 0) {
+      setIsLogin(true);
+      setMemberNum(response.data[0].memberNum);
+      navigate("/class");
     } else {
         console.log("로그인 에러!")
         setModalOpen(true);
