@@ -72,7 +72,7 @@ const RightDivision = () => {
   
   useEffect(() => {
     const LectureList = async() => {
-      const rsp = await AxiosApi.viewLecture(1,1);
+      const rsp = await AxiosApi.viewLecture(4,4);
       if(rsp.status === 200) setList(rsp.data);
     }
     LectureList();
@@ -83,7 +83,7 @@ const RightDivision = () => {
     {list && list.map(Lecturelist => (
     <Contain key={Lecturelist.id}>
       <ClassCategory>
-        일식
+        운동
       </ClassCategory>
       <ClassTitle>
         <h3>{Lecturelist.name}</h3>

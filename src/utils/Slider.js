@@ -2,7 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import './slick.css';
 import './slick-theme.css';
-
+//123
 const desc1 = <img src="https://cdn.class101.net/images/17f14836-85a3-4b50-bc4f-cfd47f64cc80/2048xauto.webp" alt="" />
 const desc2 = <img src="https://cdn.class101.net/images/79fad2df-c8dc-4d18-82bd-619c8d15a8c4/2048xauto.webp" alt="" />
 // const arrow = <img src="../images/rightarrow.png" alt="" />
