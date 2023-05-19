@@ -88,12 +88,16 @@ const Input = styled.input`
 
 const FindPw = () => {
 
+  const [inputName, setInputName] = useState("");
   const [inputId, setInputId] = useState("");
   const [inputEmail, setInputEmail] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
   const [modalText, setModalText] = useState("");
 
+  const onChangeName = (e) => {
+    setInputName(e.target.value);
+  };
 
   const onChangeEmail = (e) => {
     setInputEmail(e.target.value);
@@ -108,7 +112,7 @@ const FindPw = () => {
   };
 
   const onClickFindPw = async () => {
-    const lostPwGet = await AxiosApi.lostPwGet(inputId, inputEmail);
+    const lostPwGet = await AxiosApi.lostPwGet(inputName, inputId, inputEmail);
 
     if(lostPwGet.status === 200) {
       if(lostPwGet.data) {
@@ -127,6 +131,9 @@ const FindPw = () => {
     <Container>
       <div className="title">
         <h3>비밀번호 찾기</h3>
+      </div>
+      <div className="item">
+        <Input type="text" placeholder="이름" value={inputName} onChange={onChangeName}/>
       </div>
       <div className="item">
         <Input type="text" placeholder="아이디" value={inputId} onChange={onChangeId}/>
