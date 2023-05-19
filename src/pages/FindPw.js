@@ -113,7 +113,7 @@ const FindPw = () => {
 
   const onClickFindPw = async () => {
     const lostPwGet = await AxiosApi.lostPwGet(inputName, inputId, inputEmail);
-
+    
     if(lostPwGet.status === 200) {
       if(lostPwGet.data) {
         setModalOpen(true);

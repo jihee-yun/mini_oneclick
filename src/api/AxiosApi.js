@@ -61,7 +61,7 @@ const AxiosApi = {
         }
         return await axios.post(KH_DOMAIN + `/lostId`, findId);
     },
-    // 비밀번호 찾기
+    // 비밀번호 찾기 
     lostPwGet : async(name, id, mail) => {
         const findPw = {
             name : name,
